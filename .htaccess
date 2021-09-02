@@ -1,0 +1,20 @@
+RewriteEngine On
+
+       # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+
+    RewriteCond %{REQUEST_URI} !^/js
+    RewriteRule "^/[a-z]{2}/(.*\.(jpg|jpeg|gif|png|mp4|css|js|ico|xml|rss|txt|woff|woff2|svg))$" /$1 [NC,L]
+	
+	
