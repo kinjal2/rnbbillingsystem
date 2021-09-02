@@ -48,4 +48,4 @@ Route::Post('serchcustomer', [NewConnectionController::class, 'serchcustomer'])-
 Route::Post('savepayment', [BillCollectController::class,'savepayment'])->name('savepayment');
 Route::get('billcollect/{id}', [BillCollectController::class, 'index'])->name('index');
 Route::get('logout', [RegisterController::class, 'Logout']);
-
+Route::get('logout', [RegisterController::class, 'Logout']);
