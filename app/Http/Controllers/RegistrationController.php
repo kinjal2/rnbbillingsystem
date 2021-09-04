@@ -34,7 +34,7 @@ class RegistrationController extends Controller
 	{  
 		if(($request->has('gid') && $request->get('gid') != '') || \Auth::check())
 		{
-		    $url = "http://10.154.3.108:8090/rnbbillingsystem/";
+		    $url = "http://10.154.3.138/rnbbillingsystem/";
 		    $client = new \SoapClient("https://staging2.gujarat.gov.in/ssotest/adminservice/JSSOService.asmx?WSDL");
 				
 			if(\Auth::check())
@@ -47,8 +47,8 @@ class RegistrationController extends Controller
 				$gid = $request->get('gid');
 				
 				//try{
-					$resp =  $client->IsValidTokan(array('GId' => $gid,'AppURL' =>  $url));
-				  
+					
+						$resp =  $client->IsValidTokan(array('GId' => $gid,'AppURL' =>  $url));
 					$uid = $resp->IsValidTokanResult;
 					
 					if(!$uid)
@@ -91,7 +91,9 @@ class RegistrationController extends Controller
 					{
 						$ttt = (array) $temp;
 						$ttt = (array) $item;
-					   if(in_array($ttt['DesignationCode'],$Designationlevel)) {
+					/*	echo $ttt['DesignationCode'];
+						   print_r($Designationlevel);*/
+						if(in_array($ttt['DesignationCode'],$Designationlevel)) {
 						$office_designations[$i]['officecode'] = $ttt['OfficeCode'];
 						$office_designations[$i]['designationcode'] = $ttt['DesignationCode'];
 						$office_designations[$i]['officename'] = $ttt['Office_Eng'];

@@ -17,11 +17,11 @@ class BillGenerateController extends Controller {
     }
 
     public function savegenratenewbill() {
-     
+
         $data = Customerdetail::select( 'cust_no', 'plot_area', 'const_area', 'conn_water', 'conn_drinage', 'id' )
-      //  ->where('cust_no','=','140400')
+        ->where( 'cust_no', '=', '140400' )
         ->get();
-       //dd( $data);
+        //dd( $data );
         foreach ( $data  as  $value ) {
             if ( $value->const_area == 0.00 || $value->const_area == null ) {
                 $count_area = $value->plot_area;
@@ -29,45 +29,44 @@ class BillGenerateController extends Controller {
                 $count_area = $value->const_area;
             }
             $oldBilldetail = Billdetail::select( '*' )
-            ->where('paid_status','=',0)
-            ->where('cust_no','=',$value->cust_no)
+            ->where( 'paid_status', '=', 0 )
+            ->where( 'cust_no', '=', $value->cust_no )
             ->get();
-         
-            if(!empty($oldBilldetail))
-            {     
-                    $pin=0;
-                    $water_chwithout=0;
-                    $drainage_chwithout=0;
-                 foreach($oldBilldetail as $oldB)
-                    {
-                        if(((202122)-($oldB->fin_year))  >= 202)
-                        {
-                         
-                           $pint20=($oldB->d_os_amt_wo_d*20)/100;
-                           $pin= $pin + $pint20;
-                        
-                        }
-                        
-                        $water_chwithout+=$oldB->w_os_amt_wo_d;
-                        $drainage_chwithout+=$oldB->d_os_amt_wo_d;
 
-                   }
-                   
-                    $wp_os_amt=$water_chwithout; 
-                    $dp_os_amt=$drainage_chwithout;
-                    $pint20=$pin;
-                    
+            if ( !empty( $oldBilldetail ) ) {
+
+                $pin = 0;
+                $water_chwithout = 0;
+                $drainage_chwithout = 0;
+                foreach ( $oldBilldetail as $oldB ) {
+                    if ( ( ( 202122 )-( $oldB->fin_year ) )  >= 202 ) {
+
+                        $pint20 = ( $oldB->d_os_amt_wo_d*20 )/100;
+                        $pin = $pin + $pint20;
+
+                    }
+
+                    $water_chwithout += $oldB->w_os_amt_wo_d;
+                    $drainage_chwithout += $oldB->d_os_amt_wo_d;
+
+                }
+
+                $wp_os_amt = $water_chwithout;
+
+                $dp_os_amt = $drainage_chwithout;
+                $pint20 = $pin;
+
+            } else {
+
+                $wp_os_amt = 0;
+
+                $dp_os_amt = 0;
+                $pint20 = 0;
             }
-            else
-            {    
-                    $wp_os_amt=0; 
-                    $dp_os_amt=0;
-                    $pint20=0;
-            }
-           
+
             $data = Ratemaster::select( '*' )
-            ->where( 'start_contraction', '<=', $count_area)
-            ->where( 'end_contraction', '>=',$count_area)
+            ->where( 'start_contraction', '<=', $count_area )
+            ->where( 'end_contraction', '>=', $count_area )
             ->first();
 
             $Billdetail = new Billdetail();
@@ -86,8 +85,6 @@ class BillGenerateController extends Controller {
             $Billdetail->created_by = 1;
             $Billdetail->updated_by = 1;
             $Billdetail->save();
-
-      
 
         }
 

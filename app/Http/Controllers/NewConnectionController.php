@@ -11,6 +11,10 @@ use App\Models\Billdetail;
 use DataTables;
 use Couchdb;
 use DB;
+use Facades;
+use Carbon\Carbon;
+
+
 class NewConnectionController extends Controller {
     /**
     * Create a new controller instance.
@@ -156,7 +160,11 @@ class NewConnectionController extends Controller {
 
                   $database = Couchdb::createAttachmentDocument($couchdb_database,$username,$rev,$pathname1);
                   $array = json_decode($database, True);
-                  return redirect( 'newtconnection' )->with( 'Success', 'Data Saved Successfully' );
+                  
+
+
+
+                return redirect( 'newtconnection' )->with( 'Success', 'Data Saved Successfully' );
             } catch( Exception $e ) {
                 return redirect( 'insert' )->with( 'failed', 'operation failed' );
             }
@@ -174,7 +182,7 @@ class NewConnectionController extends Controller {
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         
-                           $btn = '<a href="' . \URL('billgenrate') . "/" . $row->id . '"  class="edit btn btn-primary btn-sm">Generate Bill</a>';
+                           $btn = '<a href="' . \URL('billgenrate') . "/" . $row->cust_no . '"  class="edit btn btn-primary btn-sm"> Bill Collection</a>';
                              return $btn;
                     })
                     ->rawColumns(['action'])
@@ -185,10 +193,18 @@ class NewConnectionController extends Controller {
 
     }
     public function billgenrate( request $request){
- 
-     $this->_viewContent['cus_detail']=Customerdetail::select('cust_no','cust_name','plot_no','home_address','id','sector_no')
-     ->where('id',$request->id)->first();
-      return view( \Config::get( 'app.theme' ) . '.newconnection.generatebill' ,$this->_viewContent);
+  //dd($request->id);
+  $this->_viewContent['cus_detail']=Customerdetail::select('cust_no','cust_name','plot_no','home_address','id','sector_no','tmp_c_dt','prm_c_dt')
+  ->where('cust_no',$request->id)->first();
+
+ $cust_no= $request->id;
+ //dd($cust_no);
+        //  \DB::enableQueryLog();
+        $this->_viewContent['bill_detail']=Billdetail::select('wp_os_amt','dp_os_amt','pint20','w_os_amt_wo_d','d_os_amt_wo_d','w_os_amt_wi_d','d_os_amt_wi_d','tb_amount','fin_year')
+  ->where('cust_no',$cust_no)->first();
+ // $query = \DB::getQueryLog();
+//dd($query);
+        return view( \Config::get( 'app.theme' ) . '.newconnection.generatebill' ,$this->_viewContent);
 
     }
     public function billcollection()
@@ -197,8 +213,6 @@ class NewConnectionController extends Controller {
     }
     public function serchcustomer(request $request){
        $fin_year = Session::get( 'fin_year' );
-       $fin_year = 202122;
-     
         $oldBilldetail = DB::table('bill_details')
             ->join('customer_details', 'bill_details.cust_no', '=', 'customer_details.cust_no')
             ->select('bill_details.*', 'customer_details.cust_name', 'customer_details.sector_no','customer_details.plot_no')
@@ -222,7 +236,7 @@ class NewConnectionController extends Controller {
           $sum=$ob->w_os_amt_wo_d+$ob->d_os_amt_wo_d ;
           $sum1=$ob->w_os_amt_wi_d+$ob->d_os_amt_wi_d ;
             if($ob->paid_status == 1){
-               $status = '<a href="#">View Receipt</a> ';
+               $status = '<a href= "'.\URL('billgenrate') . "/" . $ob->cust_no . '" >View Receipt</a> ';
             }
             else{
                 $status= '<a href="#">Bill Collect</a>';
@@ -251,10 +265,14 @@ class NewConnectionController extends Controller {
 
     
        }
+     
          
         $html .= '</tbody></table>';
         echo $html;
 
     }
+   
+    
 }
+
 

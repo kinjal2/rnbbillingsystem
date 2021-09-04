@@ -23,6 +23,7 @@ Route::get('locale/{locale}', function ($locale){
 });
 Route::get('/departmentlogin', [RegistrationController::class, 'apiLogin'])->name('departmentlogin');
 Route::post('/designationselection', [RegistrationController::class, 'designationselection'])->name('designationselection');
+Route::get('/dashboard', [RegistrationController::class, 'dashboard'])->name('dashboard');
 
 
 

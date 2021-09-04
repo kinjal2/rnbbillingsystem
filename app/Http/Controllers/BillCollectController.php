@@ -13,8 +13,7 @@ use DataTables;
 use Couchdb;
 use DB;
 use Carbon\Carbon;
-use PDF;
-
+use pdf;
 
 class billcollectController extends Controller 
  {
@@ -45,7 +44,6 @@ class billcollectController extends Controller
     public function savepayment( request $request ) {
 
         $fin_year = Session::get( 'fin_year' );
-        $fin_year = 202122;
         $Receipt = new Receipt();
         $Receipt->pay_mode = htmlentities( strip_tags( $request->pay_mode ), ENT_QUOTES );
         $Receipt->amount = htmlentities( strip_tags( $request->total_amount ), ENT_QUOTES );
@@ -54,6 +52,7 @@ class billcollectController extends Controller
         $Receipt->branch_name = htmlentities( strip_tags( $request->branch_name ), ENT_QUOTES );
         $Receipt->cheque_no = htmlentities( strip_tags( $request->cheque_no ), ENT_QUOTES );
         $Receipt->fin_year = $fin_year;
+
         $Receipt->save();
 
         DB::table( 'bill_details' )
@@ -62,17 +61,68 @@ class billcollectController extends Controller
         dd( 'done' );
 
     }
-    public function generate_pdf()
-	{
-		$data = [
-			'foo' => 'hello 1',
-            'bar' => 'hello 2',
-			'test'=> 'ઓફિસ',
-		];
-		$pdf = PDF::chunkLoadView('<html-separator/>', 'document', $data);
-		$pdf->autoScriptToLang = true;
-		$pdf->autoLangToFont = true;	
-		return $pdf->stream('document.pdf');
-	}
 
+    public function generateRagister() 
+ {
+
+        return view( \Config::get( 'app.theme' ) . '.generateRagister.generateRagister' );
+    }
+
+    public function generateRagister1( request $request ) 
+ {
+
+        $fin_year = Session::get( 'fin_year' );
+
+        $Receipt = DB::table( 'receipt' )
+        ->join( 'customer_details', 'receipt.cust_no', '=', 'customer_details.cust_no' )
+        ->select( 'receipt.*', 'customer_details.cust_name' )
+        ->whereDate( 'receipt.created_at', '=', date( 'Y-m-d', strtotime( $request->rdate ) ) )
+        ->where( 'receipt.pay_mode', '=', $request->pay_mode )
+        ->get();
+
+        $html = '<table border="1" width="100%" ><thead><tr>
+         <th style="width:25%"><strong>Customer No</strong></th>
+        <th style="width:25%"><strong>Customer Name</strong></th>
+        <th style="width:25%"><strong>Collected By</strong></th>
+        <th style="width:25%"><strong>Amount </strong></th>
+        </tr></thead><tbody>';
+
+        if ( !empty( $Receipt ) ) {
+            $total = 0;
+
+            foreach ( $Receipt as $rd ) {
+                $total = $total+$rd->amount;
+
+                if ( $rd->pay_mode == 'B' ) {
+                    $rd->pay_mode = 'Bank';
+                } else if ( $rd->pay_mode == 'C' ) {
+                    $rd->pay_mode = 'Cash';
+                } else {
+                    $rd->pay_mode = 'Demand Draft';
+                }
+
+                $html .= '<tr>
+               <td>'.$rd->cust_no.'</td>
+               <td>'.$rd->cust_name.'</td>
+               <td>'.$rd->pay_mode.'</td>
+               <td>'.$rd->amount.'</td>
+                </tr>';
+
+            }
+            $html .= '<tr>
+            <td colspan="3"><strong>Total Amount</strong></td>
+            <td>'.$total.'</td>
+            
+             </tr>';
+
+        } else {
+
+            $html .= '<tr>
+                   <td rowspan="4">There is no record</td></tr>';
+
+        }
+
+        $html .= '</tbody></table>';
+        echo $html;
+    }
 }
