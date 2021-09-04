@@ -22,9 +22,7 @@
                              </button>
                             </form>
                         </div>
-                    </div>
-					
-										</div>
+                    </div>	</div>
                                         <div class="QA_table mb_30" id='customer_list'>
                                    
                                    

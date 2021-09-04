@@ -34,7 +34,7 @@ class RegistrationController extends Controller
 	{  
 		if(($request->has('gid') && $request->get('gid') != '') || \Auth::check())
 		{
-		    $url = "http://10.154.3.138/rnbbillingsystem/";
+		    $url = "http://10.154.3.108:8090/rnbbillingsystem/";
 		    $client = new \SoapClient("https://staging2.gujarat.gov.in/ssotest/adminservice/JSSOService.asmx?WSDL");
 				
 			if(\Auth::check())
@@ -108,7 +108,7 @@ class RegistrationController extends Controller
 			else{
 		   Session::put('uid',$uid);
 		   Session::put('is_admin',True);
-			return view('ssouserregister');
+		  return view('ssouserregister');
 			}
 /* 			}
 		catch (\Exception $ex) {
@@ -146,8 +146,11 @@ class RegistrationController extends Controller
         $dlevel1=$dlevel->level;
        \Session::put('s_level', $dlevel1);
 	   \Session::put('fin_year', 202122);
-  
-	   return view('mega-user/dashboard/index');
+	   return redirect( 'dashboard' );
      }
+	 public function dashboard (Request $request){
+	
+		return view( \Config::get( 'app.theme' ) . '.dashboard.index' ); 
+	 }
 	 
 }	
