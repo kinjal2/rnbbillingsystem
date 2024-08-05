@@ -64,9 +64,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://10.154.3.99/rnbbillingsystem'),
+    'url' => env('APP_URL', 'http://10.154.3.153:8080/rnbbillingsystem'),
 
-    'asset_url' => env('ASSET_URL', 'http://10.154.3.99/rnbbillingsystem/public'),
+    'asset_url' => env('ASSET_URL', 'http://10.154.3.153:8080/rnbbillingsystem/public'),
 
     /*
     |--------------------------------------------------------------------------

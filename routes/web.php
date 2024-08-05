@@ -87,6 +87,8 @@ Route::get('/citizenlogout', [CitizenController::class, 'citizenlogout'])->name(
 
 Route::get('/citizendetails', [CitizenController::class, 'citizenDetails'])->name('citizendetails')->middleware('valid.user');
 Route::get('/bill/{cust_no}', [CitizenController::class, 'showDetails'])->name('bill.show')->middleware('valid.user');
+Route::get('/nameTransferForm',[CitizenController::class,'nameTransferForm'])->name('citizen.nameTransferForm');
+Route::post('/nameTransferRequest',[CitizenController::class,'nameTransferRequest'])->name('citizen.nameTransferRequest');
 
 
 

@@ -34,7 +34,7 @@ class RegistrationController extends Controller
 	{  //   echo  $url = "http://10.154.3.159/rnbbillingsystem/";exit;
 		if(($request->has('gid') && $request->get('gid') != '') || \Auth::check())
 		{
-			$url = "http://10.154.3.99/rnbbillingsystem/";
+			$url = "http://10.154.3.153:8080/rnbbillingsystem/";
 			$client = new \SoapClient("https://staging5.gujarat.gov.in/ssotest/adminservice/JSSOService.asmx?WSDL");
 			if(\Auth::check())
 			{

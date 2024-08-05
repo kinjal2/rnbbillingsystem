@@ -50,16 +50,26 @@
    
 <div id="tsum-tabs">
 <main>
+<!-- @if (session('activeTab'))
+    {{session('activeTab')}}
+@endif -->
+   
   
-  <input class="d-none" id="tab1" type="radio" name="tabs" checked>
+  <input class="d-none" id="tab1" type="radio" name="tabs"  @if(session('activeTab')=='registration') checked @else checked @endif>
   <label for="tab1">Signup</label>
     
-  <input class="d-none" id="tab2" type="radio" name="tabs">
+  <input class="d-none" id="tab2" type="radio" name="tabs" @if(session('activeTab')=='login') checked @endif>
   <label for="tab2">Login</label>
+
+  <!-- <input class="d-none" id="tab1" type="radio" name="tabs"   checked>
+  <label for="tab1">Signup</label>
     
+  <input class="d-none" id="tab2" type="radio" name="tabs"  checked >
+  <label for="tab2">Login</label>
+     -->
     
   <section id="content1">
-   
+  
     <div class="form_wrapper">
   <div class="form_container">
     <div class="title_container">
@@ -67,6 +77,23 @@
     </div>
     <div class="row clearfix">
       <div class="">
+                 <!-- Success Alert -->
+                 @if(session('activeTab')=='registration')
+                    @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
+
+                    <!-- Error Alert -->
+                    @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
+                @endif
       <form method="POST" action="{{ url('saveregistration') }}" name="saveregistration" id="saveregistration" enctype="multipart/form-data"> 
                         @csrf
                         <div class="input_field"> <span><i aria-hidden="true" class="fa fa-user"></i></span>
@@ -120,6 +147,23 @@
               <label for="rd2">Female</label>
               </div>-->
       <div class="">
+         <!-- Success Alert -->
+         @if(session('activeTab')=='login')
+             @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
+
+                    <!-- Error Alert -->
+                    @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
+            @endif
       <form method="POST" action="{{ url('userlogin') }}"  name="userlogin" id="userlogin" enctype="multipart/form-data"> 
       <input type='hidden' name='_token' value="{{ csrf_token() }}" />
           <div class="input_field"> <span><i aria-hidden="true" class="fa fa-user"></i></span>
