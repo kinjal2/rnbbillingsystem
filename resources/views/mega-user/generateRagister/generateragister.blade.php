@@ -9,14 +9,18 @@
                             <div class="QA_section"> 
                                  <form  id="generateragister" action='#'>
                                 <div class="white_box_tittle list_header">
-                                         <div class="form-group col-md-5">
-                                            <label for="date"> <strong>Date</strong></label>
+                                         <div class="form-group col-md-3">
+                                            <label for="date"> <strong>From Date</strong></label>
                                             <input type="date" class="form-control" name="rdate" id="rdate">
                                         </div>
-                                        <div class="form-group col-md-5">
+										  <div class="form-group col-md-3">
+                                            <label for="date"> <strong>To Date</strong></label>
+                                            <input type="date" class="form-control" name="todate" id="todate">
+                                        </div>
+                                        <div class="form-group col-md-3">
                                             <label for="payment mode"><strong>Select Payment Mode</strong></label>
                                             
-                                            {{ Form::select('pay_mode',[null=>'select payment mode']+ paymentStatus(),'',['id'=>'pay_mode','class'=>'form-control']) }}  
+                                            {{ Form::select('pay_mode',[null=>'select payment mode','-1'=>'Select All']+ paymentStatus(),'',['id'=>'pay_mode','class'=>'form-control']) }}  
 										 </div>
                                          
                                            <div class="form-group col-md-2">
@@ -60,12 +64,13 @@ var generateragister =$("#generateragister").validate({
    $('body').on('click', '.generateRagister', function () {
       var pay_mode = $('#pay_mode').val(); 
       var rdate = $('#rdate').val(); 
+      var todate = $('#todate').val(); 
 
       if ($('#generateragister').valid()) {
       
       $.ajax({
                         url: "{{ url('generateRagister1') }}",
-                         data: {pay_mode:pay_mode,rdate:rdate},
+                         data: {pay_mode:pay_mode,rdate:rdate,todate:todate},
                         method: "POST",
                         success: function (result) {
                            

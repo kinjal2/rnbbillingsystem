@@ -10,65 +10,34 @@
         </div>
     </div>
     <ul id="sidebar_menu">
- 
-		    <li class="">
-            <a  href="{{ route('departmentlogin')}}" aria-expanded="true">
-              <div class="nav_icon_small">
-                <img src="{!! URL::asset(Config::get('app.theme_path').'/img/menu-icon/dashboard.svg') !!}" alt="">
-            </div>
-            <div class="nav_title">
-                <span>Dashboard</span>
-            </div>
-            </a>
-        </li>
-      
-        <li class="">
-            <a  class="has-arrow" href="#" aria-expanded="true">
-              <div class="nav_icon_small">
-                  <img src="{!! URL::asset(Config::get('app.theme_path').'/img/menu-icon/8.svg') !!}" alt="">
-              </div>
-              <div class="nav_title">
-                  <span>Connection</span>
-              </div>
-            </a>
-            <ul>
-              
-              <li><a href="{{ route('newtconnection') }}">New Water Temporary Connection</a></li>
-              <li><a href="{{ route('getcustomerlist') }}">Customer List</a></li>
-              <li><a href="Max_Length.html">change(Permanent to Temporary )</a></li>
-            </ul>
-          </li>
-          <li class="">
-          <a href="{{ route('generatenewbill') }}">
-              <div class="nav_icon_small">
-                <img src="{!! URL::asset(Config::get('app.theme_path').'/img/menu-icon/dashboard.svg') !!}" alt="">
-            </div>
-            <div class="nav_title">
-                <span>Bill Generate</span>
-            </div>
-            </a>
-        </li>
-        <li class="">
-          <a href="{{ route('billcollection') }}">
-              <div class="nav_icon_small">
-                <img src="{!! URL::asset(Config::get('app.theme_path').'/img/menu-icon/dashboard.svg') !!}" alt="">
-            </div>
-            <div class="nav_title">
-                <span>Bill Collection</span>
-            </div>
-            </a>
-        </li>
-        <li class="">
-          <a href="{{ route('generateRagister') }}">
-              <div class="nav_icon_small">
-                <img src="{!! URL::asset(Config::get('app.theme_path').'/img/menu-icon/dashboard.svg') !!}" alt="">
-            </div>
-            <div class="nav_title">
-                <span>Generate Ragister</span>
-            </div>
-            </a>
-        </li>
+@php
+	$sidebar_menu = getMenu();
+	@endphp
+		@if(count($sidebar_menu) > 0)
+			@foreach($sidebar_menu as $key=>$menu)
+				<li class="{{checkRequestIs($menu['route'])}}">
+				<a  href="{{$menu['link'] === '#' ? 'javascript:;' :route($menu['link'])}}" aria-expanded="false"  
+				 class="{{ (isset($menu['submenu']) && !empty($menu['submenu'])) ? 'has-arrow' :''}}">
+				<div class="nav_icon_small">
+				<img src="{!! URL::asset(Config::get('app.theme_path').'/'.$menu['icon']) !!}" alt="">
+				</div>
+				<div class="nav_title">
+				<span>{{trans($menu['title'])}}</span>
+				</div>
+				</a>
+				@if(isset($menu['submenu']) && !empty($menu['submenu']))
+				<ul>
+				@foreach($menu['submenu'] as $submenu)
 
-          </ul>
+				<li><a href="{{$submenu['link'] === '#' ? 'javascript:;' :route($submenu['link'])}}">{{trans($submenu['title'])}}</a></li>
+				@endforeach
+				</ul> 
+				@endif
+				</li>
+			@endforeach
+		@endif
+		@endphp
+
+      </ul>		   
 </nav>
  <!--/ sidebar  -->

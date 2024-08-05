@@ -28,25 +28,7 @@
     <div class="main_content_iner overly_inner ">
         <div class="container-fluid p-0 ">
             <!-- page title  -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="page_title_box d-flex flex-wrap align-items-center justify-content-between">
-                        <div class="page_title_left d-flex align-items-center">
-                            <h3 class="f_s_25 f_w_700 dark_text mr_30" >Dashboard</h3>
-                            <ol class="breadcrumb page_bradcam mb-0">
-                                <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-                                <li class="breadcrumb-item active">Analytic</li>
-                            </ol>
-                        </div>
-                        <div class="page_title_right">
-                            <div class="page_date_button d-flex align-items-center"> 
-                                <img src="{!! URL::asset(Config::get('app.theme_path').'/img/icon/calender_icon.svg') !!}" alt="">
-                               
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
 			@yield('content')
 			 </div>
     </div>

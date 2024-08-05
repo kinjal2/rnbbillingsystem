@@ -323,7 +323,7 @@ a.read-more:hover{color:#000;}
 .resp-tabs-list li:last-child{margin-right:0;}
 .resp-tabs-container{padding:0;background-color:#fff;clear:left;/*border:1px solid #e6e6e6!important;border-top-color:#fff!important*/}
 h2.resp-accordion{cursor:pointer;padding:5px;display:none}
-.resp-tab-content{display:none;padding:15px;min-height:212px;position:relative;margin-top:-1px}
+.resp-tab-content{display:none;min-height:212px;position:relative;margin-top:-1px}
 .resp-tab-active{border-bottom:none;border-bottom:none;background-color:#fff}
 .resp-content-active,.resp-accordion-active{display:block}
 .resp-tab-content a.moreBtn{position:absolute;bottom:15px;right:15px;background:#2a8981;-webkit-border-radius:3px 3px 3px 3px;border-radius:3px 3px 3px 3px;color:#fff;border:0;font-size:87.5%;padding:5px 8px}

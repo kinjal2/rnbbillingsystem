@@ -10,6 +10,8 @@
                                 <div class="white_box_tittle list_header">
                                     <h4>Custmor's Bill Collection </h4>
 									<div class="serach_field-area d-flex align-items-center">
+                                   
+
                         <div class="search_inner">
                         <form  id="generateragister" action='#'>
                                 <div class="search_field">
@@ -22,8 +24,22 @@
                              </button>
                             </form>
                         </div>
-                    </div>	</div>
-                                        <div class="QA_table mb_30" id='customer_list'>
+                      
+                    </div>	
+                  
+                
+                </div><div class="row">
+                @if(session()->has('message'))
+    <div class="alert alert-success col-lg-12">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ session()->get('message') }}
+    </div>
+@endif     
+</div>            
+                
+                <div class="QA_table mb_30" id='customer_list'>
                                    
                                    
                                         

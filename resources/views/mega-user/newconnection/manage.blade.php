@@ -129,8 +129,6 @@
                                       
                                     </div>
                                     
-                                
-                                    
                                     <button type="submit" class="btn btn-primary">Save</button>
                                 </form>
                             </div>
@@ -138,5 +136,21 @@
                     </div>
                 </div>        
      
-@endsection
+                @endsection
+@push('page-ready-script')
+@endpush
+@push('footer-script')
+<script src="{{ URL::asset(Config::get('app.theme_path').'/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
+<script src="{{ URL::asset(Config::get('app.theme_path').'/plugins/jquery-validation/additional-methods.min.js')}}"></script>
+
+<script type="text/javascript">
+ 
+$("#newconnection").validate({
+		    rules : {
+				plot_area		:	"required",
+			
+		    }
+		});
+</script>
+@endpush
 

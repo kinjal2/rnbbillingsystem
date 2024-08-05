@@ -14,6 +14,6 @@ class Billdetail extends Model {
      */
     public function customerdetail()
     {
-        return $this->belongsTo(Customerdetail::class);
+        return $this->belongsTo(Customerdetail::class,'cust_no');
     }
 }

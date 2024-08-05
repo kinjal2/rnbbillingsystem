@@ -64,9 +64,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://10.154.3.108:8090/rnbbillingsystem'),
+    'url' => env('APP_URL', 'http://10.154.3.99/rnbbillingsystem'),
 
-    'asset_url' => env('ASSET_URL', 'http://10.154.3.108:8090/rnbbillingsystem/public'),
+    'asset_url' => env('ASSET_URL', 'http://10.154.3.99/rnbbillingsystem/public'),
 
     /*
     |--------------------------------------------------------------------------
@@ -174,7 +174,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-
+        Riskihajar\Terbilang\TerbilangServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -189,7 +189,9 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\CouchdbServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
-        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
+      //  Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
+      
         
 
     ],
@@ -248,7 +250,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
-       
+        'Terbilang' => Riskihajar\Terbilang\Facades\Terbilang::class,
 
     ],
 

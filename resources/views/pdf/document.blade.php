@@ -4,13 +4,13 @@
 }
     </style>
 <div>
-    <h1>Hello World</h1>
+    <h3>PHONE NO: 079-23259167-68</h3>
     <table>
         <tr><td>{{ $foo }}</td></tr>
     </table>
     <html-separator/>
     <table>
-        <tr><td>{{ $bar }}</td></tr>
+        
         <tr><td>   અંગ્રેજી </td></tr>
      
     </table>
