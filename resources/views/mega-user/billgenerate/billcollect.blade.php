@@ -39,68 +39,11 @@
 							<input type="text" class="form-control" id="cheque_no" name="cheque_no" value ="" required>
 						</div>
 					</div>
-					<button type="submit" class="btn btn-primary">Registration</button>
+					<button type="submit" class="btn btn-primary">Payment</button>
 				</form>
 			</div>
 		</div>
-		<div class="white_card_body">
-			<div class="card-body">
-			<form name="payment" method="post" id="FormEdit" enctype="multipart/form-data" action="#" > 
-				<input type='hidden' name='_token' value="{{ csrf_token() }}" />
-				<div class="form-row">
-				<div class="form-group col-md-6">
-				<label for="payment mode">Charge Back Policy</label>
-				<u>Terms & Conditions :-</u>
-				</div>
-				<div class="form-group col-md-6">
-				<ul class="fw-bold danger">
-				<li>The transaction once done cannot be cancelled.</li>
-				<li>Fees once paid is not refundable in any case.</li>
-				<li>Refund claims (if found eligible and admissible) will be entertained ONLY OFFLINE and NO ONLINE REFUNDS will be done.</li>
-				<li>Convenience fees / Bank charges, Commission of Bank plus service tax would be charged (if applicable) in addition to the fee Amount and can't be claim back as refund.</li>
-				<li>“This transaction is payment towards Government dues, fees hence would not be covered under chargeback policy.”</li>
-				</ul>
-				</div>
-				</div>
-				<div class="form-row bank" >
-				<div class="form-group col-md-4">
-				<input name="payment" class="payment check" type="checkbox" value="1" id="payment">
-				<label class="form-check-label danger" for="payment">
-				I/We agree and accept all the terms and conditions mention above and I/We hereby certify that no online chargeback claim will be made in this regards.
-				</label><br>
-				<span class="red" id="payment-error"></span>
-				<h4 class="fw-bold danger text-md-center">Please check all details before clicking on confirm button</h4>
-				</div>
-				<div class="form-group col-md-4">
-				<button type="submit" id="btnSubmit" name="btnSubmit" class="btn btn-primary">
-											<i class="icon-check2"></i>
-											Confirm
-										</button>
-				</div>
-				<div class="form-group col-md-4">
-				<button type="button" class="btn btn-warning mr-1" onclick="window.close()">
-											<i class="icon-cross2"></i> Cancel
-										</button>
-				</div>
-				</div>
-				<input type="hidden" id="aplNo" class="form-control" name="aplNo" value="1">
-				<input type="hidden" id="apl_type" class="form-control" name="apl_type" value="single">
-				<input type="hidden" id="form_type" class="form-control" name="form_type" value="test">
-				<input type="hidden" name="action" value="add" />
-				<input type="hidden" style="display:none;" id="RandomNumberHash" name="RandomNumberHash" value="" />
-				<input type="hidden" id="submission_id" class="form-control" name="submission_id" value="1">
-			</form>
-
-			<form method="POST" id="ctp" name="ctp" action="https://cybertreasuryuat.gujarat.gov.in/CyberTreasury_UAT/connectDept?service=DeptPortalConnection">
-				<input id="ctp_data" type="hidden" name="CTP_DATA" value="">
-				<input id="dept_call" type="hidden" name="Dept_call" value="first">
-				<input id="ru" type="hidden" name="RU" value=""><!-- Return url -->
-				<input id="du" type="hidden" name="DU" value="">
-			</form>
-			</div>
-		</div>
-	</div>
-</div>
+		
  @endsection
 @push('page-ready-script')
 @endpush
@@ -125,7 +68,7 @@ $("#savepayment").validate({
 			
 		    }
 });
-$('#FormEdit').on("submit", function(event) { alert(event);
+$('#FormEdit').on("submit", function(event) {  //alert(event);
     event.preventDefault();
 
     var formData = new FormData(this);
@@ -154,6 +97,6 @@ $('#FormEdit').on("submit", function(event) { alert(event);
         }
     });
 });
-
+ 
 </script>
 @endpush

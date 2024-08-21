@@ -8,8 +8,8 @@
                 <div class="card-header"><h5>{{ __('Select Designation') }}</h5></div>
 
                 <div class="card-body">
-				<form method='POST' action='designationselection'>
-				<input type='hidden' name='_token' value="{{ csrf_token() }}" />
+                    <form method='POST' action='{{ url('designationselection') }}'>
+                     @csrf
                     <div class="form-group row">
 					<label class="col-sm-2 col-form-label">Office</label>
 					<div class="col-sm-10">
@@ -26,8 +26,8 @@
 					</span>
 					@enderror
 					</div>
-			
-			
+
+
 					<div class="row m-t-30">
 					<div class="col-md-12"></div>
 					<div class="col-md-12">

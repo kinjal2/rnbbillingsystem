@@ -2033,6 +2033,11 @@ p a:hover {
   background-color: #884FFB;
   border-color: #884FFB;
 }
+.btn-primary1 {
+  color: #fff;
+  background-color: #803D3B;
+  border-color: #803D3B;
+}
 
 /* line 1500, G:/admin_project/8 admin/management_html/scss/_reset.scss */
 .btn-primary:hover {
@@ -5649,6 +5654,13 @@ body::-webkit-scrollbar {
 /* line 45, G:/admin_project/8 admin/management_html/scss/_dashboard_part.scss */
 .white_card .white_card_header {
   padding: 22px 30px;
+  border-bottom: 2px solid #bda4a4;
+  margin-bottom: 20px;
+  background: #7e77711c;
+}
+.border-light1 {
+  /* border: 2px solid #bda4a4; */
+  border: 2px solid #bda4a4;
 }
 
 /* line 53, G:/admin_project/8 admin/management_html/scss/_dashboard_part.scss */

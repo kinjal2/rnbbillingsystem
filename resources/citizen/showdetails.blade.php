@@ -1,4 +1,4 @@
-@include('master_theme/header')
+@include('master_theme/header1')
 <!--/.header-wrapper-->
 @include('master_theme/navbar')
 

@@ -1,5 +1,5 @@
 <!-- footer  -->
-<script src="{{ URL::asset(Config::get('app.theme_path').'/js/jquery-3.4.1.min.js')}}"></script>
+<script src="{{ URL::asset(Config::get('app.theme_path').'/js/jquery.min.js')}}"></script>
 <!-- popper js -->
 <script src="{{ URL::asset(Config::get('app.theme_path').'/js/popper.min.js')}}"></script>
 <!-- bootstarp js -->
@@ -51,6 +51,23 @@ $.ajaxSetup({
     }
 });
 
+/*let warningTime = 2 * 60 * 1000; // 10 minutes in milliseconds
+        let timeoutWarning = setTimeout(function() {
+            alert('Your session will expire soon. Please save your work.');
+        }, warningTime);
+
+        function resetTimer() {
+            clearTimeout(timeoutWarning);
+            timeoutWarning = setTimeout(function() {
+                alert('Your session will expire soon. Please save your work.');
+            }, warningTime);
+        }
+
+        window.onload = resetTimer;
+        document.onmousemove = resetTimer;
+        document.onkeypress = resetTimer;*/
+
+        
 </script>
 @stack('footer-script')
 <script type="text/javascript">

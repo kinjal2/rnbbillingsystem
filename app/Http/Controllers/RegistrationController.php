@@ -42,7 +42,7 @@ class RegistrationController extends Controller
 				$uid = $user->usercode;
 			}
 			else
-			{	
+			{
 				$gid = $request->get('gid');
 				try
 				{
@@ -73,7 +73,7 @@ class RegistrationController extends Controller
 								foreach($temp as $item)
 								{
 									$ttt = (array) $item;
-									if(in_array($ttt['DesignationCode'],$Designationlevel)) 
+									if(in_array($ttt['DesignationCode'],$Designationlevel))
 									{
 										$office_designations[$i]['officecode'] = $ttt['OfficeCode'];
 										$office_designations[$i]['designationcode'] = $ttt['DesignationCode'];
@@ -89,7 +89,7 @@ class RegistrationController extends Controller
 								$ttt = (array) $temp;
 								$ttt = (array) $item;
 
-								if(in_array($ttt['DesignationCode'],$Designationlevel)) 
+								if(in_array($ttt['DesignationCode'],$Designationlevel))
 								{
 									$dlevel=DB::table('master.designationlevel')->where('designationcode', '=',$ttt['DesignationCode'])->select('level')->first();
 									if(!$dlevel)
@@ -118,7 +118,7 @@ class RegistrationController extends Controller
 					\Auth::logout();
 					$departments = DB::connection('auth')->table('departments')->where('statecode', '=', '24')->where('active', '=', '1')->select('id','name')->get();
 					return view('auth/register', ['departments' => $departments , 'ssoerrormsg' => 'SSO Auth failure']);
-				} 
+				}
 			}
 		}
 	}
@@ -127,8 +127,8 @@ class RegistrationController extends Controller
        $temp = explode(':',$officedesignation);
         $validator = \Validator::make($request->all(), [
             'officedesignation' => 'required',
-           
-            
+
+
        ],[
             'officedesignation.required' => 'Office selection is required.',
         ]);
@@ -149,6 +149,16 @@ class RegistrationController extends Controller
 	   \Session::put('fin_year', 202122);
 	   return redirect( 'dashboard' );
      }
-	
-	 
-}	
+     public function logout(Request $request)
+     {
+
+         //$this->guard()->logout();
+         \Auth::logout();
+         //$request->session()->invalidate();
+         //$request->session()->regenerateToken();
+         //$request->session()->flush();
+
+         return redirect()->route('main');
+     }
+
+}

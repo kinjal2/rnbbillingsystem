@@ -16,7 +16,7 @@ use Carbon\Carbon;
 use Mpdf\Mpdf;
 use Terbilang;
 
-class billcollectController extends Controller 
+class billcollectController extends Controller
  {
     public function __construct()
  {
@@ -26,9 +26,10 @@ class billcollectController extends Controller
 
     public function index( request $request )
  {
-        //dd( $request->id );
+       // dd( $request->id );
+        $cust_id = base64_decode($request->id);
         $bill_detail = Billdetail::select( 'wp_os_amt', 'dp_os_amt', 'pint20', 'w_os_amt_wo_d', 'd_os_amt_wo_d', 'w_os_amt_wi_d', 'd_os_amt_wi_d', 'tb_amount', 'fin_year' )
-        ->where( 'cust_no', $request->id )->first();
+        ->where( 'cust_no', $cust_id )->first();
 
         $today = Carbon::today();
         $date = Carbon::createFromFormat( 'Y-m-d', '2024-03-31' );
@@ -37,41 +38,78 @@ class billcollectController extends Controller
         } else {
             $this->_viewContent['amount']  = $bill_detail->w_os_amt_wi_d+$bill_detail->d_os_amt_wi_d ;
         }
-        $this->_viewContent['cust_no']  = $request->id;
+        $this->_viewContent['cust_no']  = $cust_id;
         return view( \Config::get( 'app.theme' ) . '.billgenerate.billcollect',  $this->_viewContent );
 
     }
 
-    public function savepayment( request $request ) {
+    public function savePayment(Request $request) {
+        // Validate incoming request data
+        $validatedData = $request->validate([
+            'pay_mode' => 'required|string|max:255',
+            'total_amount' => 'required|numeric|min:0',
+            'cust_no' => 'required|string|max:255',
+            'bank_name' => 'nullable|string|max:255',
+            'branch_name' => 'nullable|string|max:255',
+            'cheque_no' => 'nullable|string|max:255',
+        ]);
 
-        $fin_year = Session::get( 'fin_year' );
-        $Receipt = new Receipt();
-        $Receipt->pay_mode = htmlentities( strip_tags( $request->pay_mode ), ENT_QUOTES );
-        $Receipt->amount = htmlentities( strip_tags( $request->total_amount ), ENT_QUOTES );
-        $Receipt->cust_no = htmlentities( strip_tags( $request->cust_no ), ENT_QUOTES );
-        $Receipt->bank_name = htmlentities( strip_tags( $request->bank_name ), ENT_QUOTES );
-        $Receipt->branch_name = htmlentities( strip_tags( $request->branch_name ), ENT_QUOTES );
-        $Receipt->cheque_no = htmlentities( strip_tags( $request->cheque_no ), ENT_QUOTES );
-        $Receipt->fin_year = $fin_year;
+        // Start by retrieving the financial year from the session
+        $fin_year = Session::get('fin_year');
 
-        $Receipt->save();
+        // Create a new instance of Receipt
+        $receipt = new Receipt();
+        $receipt->pay_mode = htmlspecialchars($validatedData['pay_mode'], ENT_QUOTES);
+        $receipt->amount = htmlspecialchars($validatedData['total_amount'], ENT_QUOTES);
+        $receipt->cust_no = htmlspecialchars($validatedData['cust_no'], ENT_QUOTES);
+        $receipt->bank_name = htmlspecialchars($validatedData['bank_name'], ENT_QUOTES);
+        $receipt->branch_name = htmlspecialchars($validatedData['branch_name'], ENT_QUOTES);
+        $receipt->cheque_no = htmlspecialchars($validatedData['cheque_no'], ENT_QUOTES);
+        $receipt->fin_year = $fin_year;
 
-        DB::table( 'bill_details' )
-        ->where( 'cust_no', $request->cust_no )  // find your user by their email
-        ->update( array( 'paid_status' => 1 ) );
+        try {
+            // Attempt to save the Receipt
+            $receipt->save();
 
-     
-        return Redirect::route('billcollection')->with('message', 'Bill Paid Successfully!');
+            // Update the billing status to paid
+            DB::table('bill_details')
+                ->where('cust_no', $validatedData['cust_no'])
+                ->update(['paid_status' => 1]);
 
+            // Log the success message for debugging
+            \Log::info('Payment successfully processed. Redirecting with success message.');
+
+            // Redirect with a success message
+            return Redirect::route('billcollection')->with('message', 'Bill Paid Successfully!');
+
+        } catch (QueryException $e) {
+            // Log the QueryException details for debugging
+            \Log::error('QueryException: ' . $e->getMessage(), ['code' => $e->getCode()]);
+
+            // Check for unique constraint violation
+            if ($e->getCode() == 23505) { // PostgreSQL unique violation error code
+                return Redirect::back()->with('error', 'A receipt for this customer and financial year already exists.');
+            }
+
+            // Handle any other query exceptions
+            return Redirect::back()->with('error', 'An error occurred while processing the payment: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            // Log the general Exception details for debugging
+            \Log::error('Exception: ' . $e->getMessage());
+
+            // Catch any other exceptions that might occur
+            return Redirect::back()->with('error', 'An unexpected error occurred: ' . $e->getMessage());
+        }
     }
 
-    public function generateRagister() 
+
+    public function generateRagister()
  {
 
         return view( \Config::get( 'app.theme' ) . '.generateragister.generateragister');
     }
 
-    public function generateRagister1( request $request ) 
+    public function generateRagister1( request $request )
  {
 
         $fin_year = Session::get( 'fin_year' );
@@ -104,14 +142,14 @@ class billcollectController extends Controller
                 if ( $rd->pay_mode == 'B' ) {
                     $pay_mode = 'Bank';
                     $status= '<a href="' . \URL('generate_pdf') . "/" . base64_encode($rd->cust_no) . '"  class="edit btn btn-primary btn-sm">Bank Challan</a>';
-                  
+
                 } else if ( $rd->pay_mode == 'C' ) {
                     $pay_mode = 'Cash';
                     $status1= '<a href="' . \URL('generate_pdf1') . "/" . base64_encode($rd->cust_no) . '"  class="edit btn btn-primary btn-sm">Cash Challan</a>';
                 } else {
                     $pay_mode = 'Demand Draft';
                 }
-                
+
                 $html .= '<tr>
                <td>'.$rd->cust_no.'</td>
                <td>'.$rd->cust_name.'</td>
@@ -142,7 +180,7 @@ class billcollectController extends Controller
         echo $html;
     }
     public function generate_pdf (request $request ){
-        
+
     // Decode the customer ID from base64
     $cust_id = base64_decode($request->id);
 
@@ -175,7 +213,7 @@ class billcollectController extends Controller
         'amount' => $oldBilldetail->amount,
         'amountword' => Terbilang::make($oldBilldetail->amount, " Only", 'Rupees '),
     ];
-    $this->_viewContent['data']=$data; 
+    $this->_viewContent['data']=$data;
     // Create a new mPDF instance
     $mpdf = new Mpdf();
 
@@ -193,9 +231,9 @@ class billcollectController extends Controller
     $mpdf->Output('document.pdf', 'I'); // 'D' for download, 'I' for inline display, 'F' for file save
     }
     public function generate_pdf1 (request $request ){
-        
+
         // Decode the customer ID from base64
-      
+
         // Get the financial year from session
         $fin_year = Session::get('fin_year');
         $mpdf = new Mpdf();

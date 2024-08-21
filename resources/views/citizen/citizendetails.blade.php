@@ -1,4 +1,4 @@
-@include('master_theme/header')
+@include('master_theme/header1')
 <!--/.header-wrapper-->
 @include('master_theme/navbar')
 
@@ -12,14 +12,14 @@
         <th>Property</th>
         <th  style="width: 20%;">Name & Address</th>
         <th>Outstanding</th>
-        
+
       <!--  <th>Class & Category <br><small>Building Type</small></th>-->
         <th>Total Dues</th>
         <th> Credit Balance</th>
         <th>Status</th>
         <th>Actions</th>
       </tr>
-    
+
     @if ($bill_detail)
     @foreach ($bill_detail as $bill)
         <tr>
@@ -50,7 +50,7 @@
                 ₹{{ number_format($bill['tb_amount'], 2) }}
                 <br><small>({{ $bill['fin_year'] }})</small>
             </td>
-            
+
            <!-- <td data-th="Class & Category Building Type">
                 {{ $bill['plot_no'] }} - {{ $bill['conn_purpose'] }}
                 <br><small>({{ $bill['sector_no'] }}/{{ $bill['tmp_c_dt'] }})</small>
@@ -61,8 +61,8 @@
                 <span class="clr_green">{{ $bill['app_status'] == 1 ? 'Active' : 'Inactive' }}</span>
             </td>
             <td data-th="Actions">
-            <a class="btn btn-primary" href="{{ route('bill.show', ['cust_no' => $bill['cust_no']]) }}">select</a>
-    
+            <a class="btn btn-primary" href="{{ route('bill.show', ['cust_no' => base64_encode($bill['cust_no'])]) }}">select</a>
+
             </td>
         </tr>
     @endforeach

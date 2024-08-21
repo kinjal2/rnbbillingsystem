@@ -87,22 +87,17 @@
     <nav class="main-menu clearfix mt-4 pt-3" id="main_menu">
       <ul class="nav-menu">
         			    
-			<!--<li> <a href="#" class="home"><i class="fa fa-home"></i></a> </li>-->
+			<!-- <li> <a href="#" class="home"><i class="fa fa-home"></i></a> </li> -->
 	
-			<li class="home" ><a  href="https://staging5.gujarat.gov.in/SSOtest/SSO.aspx?Rurl={{ route('departmentlogin') }}">
-        <b> LOG IN &nbsp;<i class="fa fa-sign-in"></i></b></a></li>
+			
 
-      @if (Session::has('user'))
+     @if (Session::has('user'))
       <li class="home"><a href="{{ route('citizenlogout') }}"><b>Logout &nbsp;<i class="fa fa-sign-in"></i></b></a></li>
       @else
-     <!-- <li class="home"><a href="{{ route('citizenlogin') }}"><b>Citizen login &nbsp;<i class="fa fa-sign-in"></i></b></a></li>-->
-<li class="home"><a href="{{ route('citizenregistration') }}"><b>Citizen
-                                                    Registration
-                                                    &nbsp;<i class="fa fa-sign-in"></i></b></a></li>
-                                        <li class="home"><a href="{{ route('citizenlogin') }}"><b>Citizen Login
-                                                    &nbsp;<i class="fa fa-sign-in"></i></b></a></li>
+		<li class="home" ><a  href="https://staging5.gujarat.gov.in/SSOtest/SSO.aspx?Rurl={{ route('departmentlogin') }}"><b> LOG IN &nbsp;<i class="fa fa-sign-in"></i></b></a></li>  
+      <li class="home"><a href="{{ route('citizenlogin') }}"><b>Citizen login &nbsp;<i class="fa fa-sign-in"></i></b></a></li>
       @endif
-
+	
      </ul>
     </nav>
     <nav class="main-menu clearfix" id="overflow_menu">
